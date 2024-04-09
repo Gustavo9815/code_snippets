@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer para Practicar Presentaciones</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
+    }
+    #timer {
+      font-size: 3rem; /* Tamaño de la fuente más grande */
+      margin: 0 auto; /* Centra el temporizador horizontalmente */
+      margin-bottom: 20px;
+      color: black; /* Color inicial del temporizador */
+    }
+    button {
+      font-size: 1rem;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Timer para Practicar Presentaciones</h1>
+  <div>
+    <label for="slides">Número de Slides:</label>
+    <select id="slides">
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    <label for="tiempo">Tiempo por Slide:</label>
+    <select id="tiempo">
+      <option value="10">10 segundos</option>
+      <option value="20">20 segundos</option>
+    </select>
+    <button onclick="iniciarTimer()">Iniciar</button>
+  </div>
+  <div id="timer"></div>
+
+  <script>
+    let slides = document.getElementById('slides');
+    let tiempo = document.getElementById('tiempo');
+    let timerDisplay = document.getElementById('timer');
+    let totalSlides = 0;
+    let slideDuration = 0;
+
+    function iniciarTimer() {
+      totalSlides = parseInt(slides.value);
+      slideDuration = parseInt(tiempo.value);
+      startSlideTimer();
+    }
+
+    function startSlideTimer() {
+      let secondsLeft = slideDuration;
+      let slideCount = 1;
+      
+      timerDisplay.textContent = `Slide ${slideCount} - Tiempo restante: ${secondsLeft} segundos`;
+
+      let interval = setInterval(function() {
+        secondsLeft--;
+        timerDisplay.textContent = `Slide ${slideCount} - Tiempo restante: ${secondsLeft} segundos`;
+
+        if (secondsLeft <= 3) {
+          timerDisplay.style.color = 'red'; // Cambia el color del texto a rojo
+        }
+
+        if (secondsLeft === 0) {
+          slideCount++;
+          if (slideCount <= totalSlides) {
+            secondsLeft = slideDuration;
+            timerDisplay.textContent = `Slide ${slideCount} - Tiempo restante: ${secondsLeft} segundos`;
+            timerDisplay.style.color = 'black'; // Cambia el color del texto a negro
+          } else {
+            clearInterval(interval);
+            timerDisplay.textContent = `¡Presentación Terminada!`;
+          }
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
